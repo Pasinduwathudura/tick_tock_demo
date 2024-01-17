@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9620dbcb28dd4a89bfdcdfa6b8230578" Name="Diagram1">
+        <EntityTypeShape EntityType="TickModel.calender" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.client" Width="1.5" PointX="0.75" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.company" Width="1.5" PointX="3" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.country" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.employee" Width="1.5" PointX="7.5" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.employee_contact" Width="1.5" PointX="9.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.holiday" Width="1.5" PointX="8.25" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.job_description" Width="1.5" PointX="5.25" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.leave_employee" Width="1.5" PointX="9.75" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.leave_group" Width="1.5" PointX="5.25" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.project" Width="1.5" PointX="5.25" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.task" Width="1.5" PointX="15" PointY="26.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickModel.tracking_sheet" Width="1.5" PointX="12.75" PointY="22.625" IsExpanded="true" />
+        <AssociationConnector Association="TickModel.FK_calender_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_calender_country" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_calender_holiday" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_company_client" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_employee_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_holiday_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_job_description_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_leave_group_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_project_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_tracking_sheet_company" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_employee_contact_country" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_holiday_country" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_employee_contact_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_employee_holiday" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_employee_job_desc" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_leave_employee_approved_by" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_leave_employee_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_tracking_sheet_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_task_project" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_tracking_sheet_project" ManuallyRouted="false" />
+        <AssociationConnector Association="TickModel.FK_task_tracking_sheet" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

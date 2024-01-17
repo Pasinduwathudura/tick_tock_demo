@@ -1,0 +1,1264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TickModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="calender">
+          <Key>
+            <PropertyRef Name="calender_id" />
+          </Key>
+          <Property Name="calender_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="calender_year" Type="int" />
+          <Property Name="calender_month" Type="int" />
+          <Property Name="calender_week_01_start_date" Type="date" />
+          <Property Name="calender_week_01_end_date" Type="date" />
+          <Property Name="calender_week_02_start_date" Type="date" />
+          <Property Name="calender_week_02_end_date" Type="date" />
+          <Property Name="calender_week_03_start_date" Type="date" />
+          <Property Name="calender_week_03_end_date" Type="date" />
+          <Property Name="calender_week_04_start_date" Type="date" />
+          <Property Name="calender_week_04_end_date" Type="date" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+          <Property Name="holiday_id" Type="uniqueidentifier" />
+          <Property Name="country_id" Type="uniqueidentifier" />
+          <Property Name="num_working_days" Type="int" />
+        </EntityType>
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="client_id" />
+          </Key>
+          <Property Name="client_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="client_name" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="company_name" Type="varchar(max)" />
+          <Property Name="client_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="country_name" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="emp_id" />
+          </Key>
+          <Property Name="emp_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="emp_first_name" Type="varchar(max)" />
+          <Property Name="emp_last_name" Type="varchar(max)" />
+          <Property Name="comp_id" Type="uniqueidentifier" />
+          <Property Name="holiday_id" Type="uniqueidentifier" />
+          <Property Name="user_id" Type="nvarchar" MaxLength="128" />
+          <Property Name="job_des_id" Type="uniqueidentifier" />
+          <Property Name="pic" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="employee_contact">
+          <Key>
+            <PropertyRef Name="emp_cont_id" />
+          </Key>
+          <Property Name="emp_cont_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="emp_address_line_01" Type="varchar(max)" />
+          <Property Name="emp_address_line_02" Type="varchar(max)" />
+          <Property Name="emp_address_city" Type="varchar(max)" />
+          <Property Name="emp_address_postalcode" Type="varchar" MaxLength="50" />
+          <Property Name="emp_address_st_or_pr" Type="varchar(max)" />
+          <Property Name="emp_phone_01" Type="varchar" MaxLength="50" />
+          <Property Name="emp_phone_02" Type="varchar" MaxLength="50" />
+          <Property Name="country_id" Type="uniqueidentifier" />
+          <Property Name="employee_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="holiday">
+          <Key>
+            <PropertyRef Name="holiday_id" />
+          </Key>
+          <Property Name="holiday_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="holiday_name" Type="varchar(max)" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+          <Property Name="country_id" Type="uniqueidentifier" />
+          <Property Name="holiday_date" Type="date" />
+        </EntityType>
+        <EntityType Name="job_description">
+          <Key>
+            <PropertyRef Name="job_desc_id" />
+          </Key>
+          <Property Name="job_desc_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="job_desc_name" Type="varchar(max)" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="leave_employee">
+          <Key>
+            <PropertyRef Name="leave_emp_id" />
+          </Key>
+          <Property Name="leave_emp_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="leave_group_id" Type="uniqueidentifier" />
+          <Property Name="leave_start_date" Type="datetime" />
+          <Property Name="leave_end_date" Type="datetime" />
+          <Property Name="leave_reason" Type="varchar(max)" />
+          <Property Name="leave_status" Type="varchar" MaxLength="50" />
+          <Property Name="approve_by_emp_id" Type="uniqueidentifier" />
+          <Property Name="employee_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="leave_group">
+          <Key>
+            <PropertyRef Name="leave_id" />
+          </Key>
+          <Property Name="leave_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="leave_type" Type="varchar(max)" />
+          <Property Name="number_of_days" Type="int" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="project_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="project_name" Type="varchar(max)" />
+          <Property Name="project_des" Type="varchar(max)" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="task_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="task_name" Type="varchar(max)" />
+          <Property Name="task_start_time" Type="time" Precision="7" />
+          <Property Name="task_end_time" Type="time" Precision="7" />
+          <Property Name="task_description" Type="varchar(max)" />
+          <Property Name="tracking_sheet_id" Type="uniqueidentifier" />
+          <Property Name="project_id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tracking_sheet">
+          <Key>
+            <PropertyRef Name="tracking_id" />
+          </Key>
+          <Property Name="tracking_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="uniqueidentifier" />
+          <Property Name="tracking_date" Type="date" />
+          <Property Name="tracking_start_time" Type="time" Precision="7" />
+          <Property Name="tracking_end_time" Type="time" Precision="7" />
+          <Property Name="total_hours" Type="int" />
+          <Property Name="company_id" Type="uniqueidentifier" />
+          <Property Name="project_id" Type="uniqueidentifier" />
+        </EntityType>
+        <Association Name="FK_calender_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_calender_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_calender_holiday">
+          <End Role="holiday" Type="Self.holiday" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="holiday">
+              <PropertyRef Name="holiday_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="holiday_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_company_client">
+          <End Role="client" Type="Self.client" Multiplicity="0..1" />
+          <End Role="company" Type="Self.company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="company">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_contact_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="employee_contact" Type="Self.employee_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="employee_contact">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_contact_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="employee_contact" Type="Self.employee_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="employee_contact">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_holiday">
+          <End Role="holiday" Type="Self.holiday" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="holiday">
+              <PropertyRef Name="holiday_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="holiday_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_job_desc">
+          <End Role="job_description" Type="Self.job_description" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job_description">
+              <PropertyRef Name="job_desc_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="job_des_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_holiday_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="holiday" Type="Self.holiday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="holiday">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_holiday_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="holiday" Type="Self.holiday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="holiday">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_job_description_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="job_description" Type="Self.job_description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="job_description">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_employee_approved_by">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="approve_by_emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_employee_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_group_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="leave_group" Type="Self.leave_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="leave_group">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_project_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_project">
+          <End Role="project" Type="Self.project" Multiplicity="0..1" />
+          <End Role="task" Type="Self.task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_tracking_sheet">
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="0..1" />
+          <End Role="task" Type="Self.task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tracking_sheet">
+              <PropertyRef Name="tracking_id" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="tracking_sheet_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_project">
+          <End Role="project" Type="Self.project" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TickModelStoreContainer">
+          <EntitySet Name="calender" EntityType="Self.calender" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="client" EntityType="Self.client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="company" EntityType="Self.company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="country" EntityType="Self.country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee_contact" EntityType="Self.employee_contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="holiday" EntityType="Self.holiday" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="job_description" EntityType="Self.job_description" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="leave_employee" EntityType="Self.leave_employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="leave_group" EntityType="Self.leave_group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="project" EntityType="Self.project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="task" EntityType="Self.task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tracking_sheet" EntityType="Self.tracking_sheet" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_calender_company" Association="Self.FK_calender_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="calender" EntitySet="calender" />
+          </AssociationSet>
+          <AssociationSet Name="FK_calender_country" Association="Self.FK_calender_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="calender" EntitySet="calender" />
+          </AssociationSet>
+          <AssociationSet Name="FK_calender_holiday" Association="Self.FK_calender_holiday">
+            <End Role="holiday" EntitySet="holiday" />
+            <End Role="calender" EntitySet="calender" />
+          </AssociationSet>
+          <AssociationSet Name="FK_company_client" Association="Self.FK_company_client">
+            <End Role="client" EntitySet="client" />
+            <End Role="company" EntitySet="company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_company" Association="Self.FK_employee_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_contact_country" Association="Self.FK_employee_contact_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="employee_contact" EntitySet="employee_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_contact_employee" Association="Self.FK_employee_contact_employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employee_contact" EntitySet="employee_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_holiday" Association="Self.FK_employee_holiday">
+            <End Role="holiday" EntitySet="holiday" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_job_desc" Association="Self.FK_employee_job_desc">
+            <End Role="job_description" EntitySet="job_description" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_holiday_company" Association="Self.FK_holiday_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="holiday" EntitySet="holiday" />
+          </AssociationSet>
+          <AssociationSet Name="FK_holiday_country" Association="Self.FK_holiday_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="holiday" EntitySet="holiday" />
+          </AssociationSet>
+          <AssociationSet Name="FK_job_description_company" Association="Self.FK_job_description_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="job_description" EntitySet="job_description" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_employee_approved_by" Association="Self.FK_leave_employee_approved_by">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_employee_employee" Association="Self.FK_leave_employee_employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_group_company" Association="Self.FK_leave_group_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="leave_group" EntitySet="leave_group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_project_company" Association="Self.FK_project_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_task_project" Association="Self.FK_task_project">
+            <End Role="project" EntitySet="project" />
+            <End Role="task" EntitySet="task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_task_tracking_sheet" Association="Self.FK_task_tracking_sheet">
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+            <End Role="task" EntitySet="task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_company" Association="Self.FK_tracking_sheet_company">
+            <End Role="company" EntitySet="company" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_employee" Association="Self.FK_tracking_sheet_employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_project" Association="Self.FK_tracking_sheet_project">
+            <End Role="project" EntitySet="project" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TickModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="calender">
+          <Key>
+            <PropertyRef Name="calender_id" />
+          </Key>
+          <Property Name="calender_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="calender_year" Type="Int32" />
+          <Property Name="calender_month" Type="Int32" />
+          <Property Name="calender_week_01_start_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_01_end_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_02_start_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_02_end_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_03_start_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_03_end_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_04_start_date" Type="DateTime" Precision="0" />
+          <Property Name="calender_week_04_end_date" Type="DateTime" Precision="0" />
+          <Property Name="company_id" Type="Guid" />
+          <Property Name="holiday_id" Type="Guid" />
+          <Property Name="country_id" Type="Guid" />
+          <Property Name="num_working_days" Type="Int32" />
+          <NavigationProperty Name="company" Relationship="Self.FK_calender_company" FromRole="calender" ToRole="company" />
+          <NavigationProperty Name="country" Relationship="Self.FK_calender_country" FromRole="calender" ToRole="country" />
+          <NavigationProperty Name="holiday" Relationship="Self.FK_calender_holiday" FromRole="calender" ToRole="holiday" />
+        </EntityType>
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="client_id" />
+          </Key>
+          <Property Name="client_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="client_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="companies" Relationship="Self.FK_company_client" FromRole="client" ToRole="company" />
+        </EntityType>
+        <EntityType Name="company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="company_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="client_id" Type="Guid" />
+          <NavigationProperty Name="calenders" Relationship="Self.FK_calender_company" FromRole="company" ToRole="calender" />
+          <NavigationProperty Name="client" Relationship="Self.FK_company_client" FromRole="company" ToRole="client" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employee_company" FromRole="company" ToRole="employee" />
+          <NavigationProperty Name="holidays" Relationship="Self.FK_holiday_company" FromRole="company" ToRole="holiday" />
+          <NavigationProperty Name="job_description" Relationship="Self.FK_job_description_company" FromRole="company" ToRole="job_description" />
+          <NavigationProperty Name="leave_group" Relationship="Self.FK_leave_group_company" FromRole="company" ToRole="leave_group" />
+          <NavigationProperty Name="projects" Relationship="Self.FK_project_company" FromRole="company" ToRole="project" />
+          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_company" FromRole="company" ToRole="tracking_sheet" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="country_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="calenders" Relationship="Self.FK_calender_country" FromRole="country" ToRole="calender" />
+          <NavigationProperty Name="employee_contact" Relationship="Self.FK_employee_contact_country" FromRole="country" ToRole="employee_contact" />
+          <NavigationProperty Name="holidays" Relationship="Self.FK_holiday_country" FromRole="country" ToRole="holiday" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="emp_id" />
+          </Key>
+          <Property Name="emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_first_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_last_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="comp_id" Type="Guid" />
+          <Property Name="holiday_id" Type="Guid" />
+          <Property Name="user_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="job_des_id" Type="Guid" />
+          <Property Name="pic" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="company" Relationship="Self.FK_employee_company" FromRole="employee" ToRole="company" />
+          <NavigationProperty Name="employee_contact" Relationship="Self.FK_employee_contact_employee" FromRole="employee" ToRole="employee_contact" />
+          <NavigationProperty Name="holiday" Relationship="Self.FK_employee_holiday" FromRole="employee" ToRole="holiday" />
+          <NavigationProperty Name="job_description" Relationship="Self.FK_employee_job_desc" FromRole="employee" ToRole="job_description" />
+          <NavigationProperty Name="leave_employee" Relationship="Self.FK_leave_employee_approved_by" FromRole="employee" ToRole="leave_employee" />
+          <NavigationProperty Name="leave_employee1" Relationship="Self.FK_leave_employee_employee" FromRole="employee" ToRole="leave_employee" />
+          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_employee" FromRole="employee" ToRole="tracking_sheet" />
+        </EntityType>
+        <EntityType Name="employee_contact">
+          <Key>
+            <PropertyRef Name="emp_cont_id" />
+          </Key>
+          <Property Name="emp_cont_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_address_line_01" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_address_line_02" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_address_city" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_address_postalcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_address_st_or_pr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_phone_01" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_phone_02" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country_id" Type="Guid" />
+          <Property Name="employee_id" Type="Guid" />
+          <NavigationProperty Name="country" Relationship="Self.FK_employee_contact_country" FromRole="employee_contact" ToRole="country" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_employee_contact_employee" FromRole="employee_contact" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="holiday">
+          <Key>
+            <PropertyRef Name="holiday_id" />
+          </Key>
+          <Property Name="holiday_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="holiday_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="company_id" Type="Guid" />
+          <Property Name="country_id" Type="Guid" />
+          <Property Name="holiday_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="calenders" Relationship="Self.FK_calender_holiday" FromRole="holiday" ToRole="calender" />
+          <NavigationProperty Name="company" Relationship="Self.FK_holiday_company" FromRole="holiday" ToRole="company" />
+          <NavigationProperty Name="country" Relationship="Self.FK_holiday_country" FromRole="holiday" ToRole="country" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employee_holiday" FromRole="holiday" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="job_description">
+          <Key>
+            <PropertyRef Name="job_desc_id" />
+          </Key>
+          <Property Name="job_desc_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="job_desc_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="company_id" Type="Guid" />
+          <NavigationProperty Name="company" Relationship="Self.FK_job_description_company" FromRole="job_description" ToRole="company" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employee_job_desc" FromRole="job_description" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="leave_employee">
+          <Key>
+            <PropertyRef Name="leave_emp_id" />
+          </Key>
+          <Property Name="leave_emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="leave_group_id" Type="Guid" />
+          <Property Name="leave_start_date" Type="DateTime" Precision="3" />
+          <Property Name="leave_end_date" Type="DateTime" Precision="3" />
+          <Property Name="leave_reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="leave_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approve_by_emp_id" Type="Guid" />
+          <Property Name="employee_id" Type="Guid" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_leave_employee_approved_by" FromRole="leave_employee" ToRole="employee" />
+          <NavigationProperty Name="employee1" Relationship="Self.FK_leave_employee_employee" FromRole="leave_employee" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="leave_group">
+          <Key>
+            <PropertyRef Name="leave_id" />
+          </Key>
+          <Property Name="leave_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="leave_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="number_of_days" Type="Int32" />
+          <Property Name="company_id" Type="Guid" />
+          <NavigationProperty Name="company" Relationship="Self.FK_leave_group_company" FromRole="leave_group" ToRole="company" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="project_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="project_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="project_des" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="company_id" Type="Guid" />
+          <NavigationProperty Name="company" Relationship="Self.FK_project_company" FromRole="project" ToRole="company" />
+          <NavigationProperty Name="tasks" Relationship="Self.FK_task_project" FromRole="project" ToRole="task" />
+          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_project" FromRole="project" ToRole="tracking_sheet" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="task_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="task_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="task_start_time" Type="Time" Precision="7" />
+          <Property Name="task_end_time" Type="Time" Precision="7" />
+          <Property Name="task_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="tracking_sheet_id" Type="Guid" />
+          <Property Name="project_id" Type="Guid" />
+          <NavigationProperty Name="project" Relationship="Self.FK_task_project" FromRole="task" ToRole="project" />
+          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_task_tracking_sheet" FromRole="task" ToRole="tracking_sheet" />
+        </EntityType>
+        <EntityType Name="tracking_sheet">
+          <Key>
+            <PropertyRef Name="tracking_id" />
+          </Key>
+          <Property Name="tracking_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="Guid" />
+          <Property Name="tracking_date" Type="DateTime" Precision="0" />
+          <Property Name="tracking_start_time" Type="Time" Precision="7" />
+          <Property Name="tracking_end_time" Type="Time" Precision="7" />
+          <Property Name="total_hours" Type="Int32" />
+          <Property Name="company_id" Type="Guid" />
+          <Property Name="project_id" Type="Guid" />
+          <NavigationProperty Name="company" Relationship="Self.FK_tracking_sheet_company" FromRole="tracking_sheet" ToRole="company" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_tracking_sheet_employee" FromRole="tracking_sheet" ToRole="employee" />
+          <NavigationProperty Name="project" Relationship="Self.FK_tracking_sheet_project" FromRole="tracking_sheet" ToRole="project" />
+          <NavigationProperty Name="tasks" Relationship="Self.FK_task_tracking_sheet" FromRole="tracking_sheet" ToRole="task" />
+        </EntityType>
+        <Association Name="FK_calender_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_calender_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_calender_holiday">
+          <End Role="holiday" Type="Self.holiday" Multiplicity="0..1" />
+          <End Role="calender" Type="Self.calender" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="holiday">
+              <PropertyRef Name="holiday_id" />
+            </Principal>
+            <Dependent Role="calender">
+              <PropertyRef Name="holiday_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_company_client">
+          <End Role="client" Type="Self.client" Multiplicity="0..1" />
+          <End Role="company" Type="Self.company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="company">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_holiday_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="holiday" Type="Self.holiday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="holiday">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_job_description_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="job_description" Type="Self.job_description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="job_description">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_group_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="leave_group" Type="Self.leave_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="leave_group">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_project_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_company">
+          <End Role="company" Type="Self.company" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_contact_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="employee_contact" Type="Self.employee_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="employee_contact">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_holiday_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="holiday" Type="Self.holiday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="holiday">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_contact_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="employee_contact" Type="Self.employee_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="employee_contact">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_holiday">
+          <End Role="holiday" Type="Self.holiday" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="holiday">
+              <PropertyRef Name="holiday_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="holiday_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_job_desc">
+          <End Role="job_description" Type="Self.job_description" Multiplicity="0..1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job_description">
+              <PropertyRef Name="job_desc_id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="job_des_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_employee_approved_by">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="approve_by_emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_employee_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_project">
+          <End Role="project" Type="Self.project" Multiplicity="0..1" />
+          <End Role="task" Type="Self.task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_project">
+          <End Role="project" Type="Self.project" Multiplicity="0..1" />
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_tracking_sheet">
+          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="0..1" />
+          <End Role="task" Type="Self.task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tracking_sheet">
+              <PropertyRef Name="tracking_id" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="tracking_sheet_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tickEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="calenders" EntityType="Self.calender" />
+          <EntitySet Name="clients" EntityType="Self.client" />
+          <EntitySet Name="companies" EntityType="Self.company" />
+          <EntitySet Name="countries" EntityType="Self.country" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="employee_contact" EntityType="Self.employee_contact" />
+          <EntitySet Name="holidays" EntityType="Self.holiday" />
+          <EntitySet Name="job_description" EntityType="Self.job_description" />
+          <EntitySet Name="leave_employee" EntityType="Self.leave_employee" />
+          <EntitySet Name="leave_group" EntityType="Self.leave_group" />
+          <EntitySet Name="projects" EntityType="Self.project" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tasks" EntityType="Self.task" />
+          <EntitySet Name="tracking_sheet" EntityType="Self.tracking_sheet" />
+          <AssociationSet Name="FK_calender_company" Association="Self.FK_calender_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="calender" EntitySet="calenders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_calender_country" Association="Self.FK_calender_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="calender" EntitySet="calenders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_calender_holiday" Association="Self.FK_calender_holiday">
+            <End Role="holiday" EntitySet="holidays" />
+            <End Role="calender" EntitySet="calenders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_company_client" Association="Self.FK_company_client">
+            <End Role="client" EntitySet="clients" />
+            <End Role="company" EntitySet="companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_company" Association="Self.FK_employee_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_holiday_company" Association="Self.FK_holiday_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="holiday" EntitySet="holidays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_job_description_company" Association="Self.FK_job_description_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="job_description" EntitySet="job_description" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_group_company" Association="Self.FK_leave_group_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="leave_group" EntitySet="leave_group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_project_company" Association="Self.FK_project_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_company" Association="Self.FK_tracking_sheet_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_contact_country" Association="Self.FK_employee_contact_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="employee_contact" EntitySet="employee_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_holiday_country" Association="Self.FK_holiday_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="holiday" EntitySet="holidays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_contact_employee" Association="Self.FK_employee_contact_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employee_contact" EntitySet="employee_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_holiday" Association="Self.FK_employee_holiday">
+            <End Role="holiday" EntitySet="holidays" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_job_desc" Association="Self.FK_employee_job_desc">
+            <End Role="job_description" EntitySet="job_description" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_employee_approved_by" Association="Self.FK_leave_employee_approved_by">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_employee_employee" Association="Self.FK_leave_employee_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_employee" Association="Self.FK_tracking_sheet_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_task_project" Association="Self.FK_task_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="task" EntitySet="tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_project" Association="Self.FK_tracking_sheet_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_task_tracking_sheet" Association="Self.FK_task_tracking_sheet">
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+            <End Role="task" EntitySet="tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TickModelStoreContainer" CdmEntityContainer="tickEntities">
+          <EntitySetMapping Name="calenders">
+            <EntityTypeMapping TypeName="TickModel.calender">
+              <MappingFragment StoreEntitySet="calender">
+                <ScalarProperty Name="calender_id" ColumnName="calender_id" />
+                <ScalarProperty Name="calender_year" ColumnName="calender_year" />
+                <ScalarProperty Name="calender_month" ColumnName="calender_month" />
+                <ScalarProperty Name="calender_week_01_start_date" ColumnName="calender_week_01_start_date" />
+                <ScalarProperty Name="calender_week_01_end_date" ColumnName="calender_week_01_end_date" />
+                <ScalarProperty Name="calender_week_02_start_date" ColumnName="calender_week_02_start_date" />
+                <ScalarProperty Name="calender_week_02_end_date" ColumnName="calender_week_02_end_date" />
+                <ScalarProperty Name="calender_week_03_start_date" ColumnName="calender_week_03_start_date" />
+                <ScalarProperty Name="calender_week_03_end_date" ColumnName="calender_week_03_end_date" />
+                <ScalarProperty Name="calender_week_04_start_date" ColumnName="calender_week_04_start_date" />
+                <ScalarProperty Name="calender_week_04_end_date" ColumnName="calender_week_04_end_date" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="holiday_id" ColumnName="holiday_id" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="num_working_days" ColumnName="num_working_days" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="clients">
+            <EntityTypeMapping TypeName="TickModel.client">
+              <MappingFragment StoreEntitySet="client">
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+                <ScalarProperty Name="client_name" ColumnName="client_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="companies">
+            <EntityTypeMapping TypeName="TickModel.company">
+              <MappingFragment StoreEntitySet="company">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="company_name" ColumnName="company_name" />
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="TickModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="TickModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="emp_first_name" ColumnName="emp_first_name" />
+                <ScalarProperty Name="emp_last_name" ColumnName="emp_last_name" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="holiday_id" ColumnName="holiday_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="job_des_id" ColumnName="job_des_id" />
+                <ScalarProperty Name="pic" ColumnName="pic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee_contact">
+            <EntityTypeMapping TypeName="TickModel.employee_contact">
+              <MappingFragment StoreEntitySet="employee_contact">
+                <ScalarProperty Name="emp_cont_id" ColumnName="emp_cont_id" />
+                <ScalarProperty Name="emp_address_line_01" ColumnName="emp_address_line_01" />
+                <ScalarProperty Name="emp_address_line_02" ColumnName="emp_address_line_02" />
+                <ScalarProperty Name="emp_address_city" ColumnName="emp_address_city" />
+                <ScalarProperty Name="emp_address_postalcode" ColumnName="emp_address_postalcode" />
+                <ScalarProperty Name="emp_address_st_or_pr" ColumnName="emp_address_st_or_pr" />
+                <ScalarProperty Name="emp_phone_01" ColumnName="emp_phone_01" />
+                <ScalarProperty Name="emp_phone_02" ColumnName="emp_phone_02" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="holidays">
+            <EntityTypeMapping TypeName="TickModel.holiday">
+              <MappingFragment StoreEntitySet="holiday">
+                <ScalarProperty Name="holiday_id" ColumnName="holiday_id" />
+                <ScalarProperty Name="holiday_name" ColumnName="holiday_name" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="holiday_date" ColumnName="holiday_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="job_description">
+            <EntityTypeMapping TypeName="TickModel.job_description">
+              <MappingFragment StoreEntitySet="job_description">
+                <ScalarProperty Name="job_desc_id" ColumnName="job_desc_id" />
+                <ScalarProperty Name="job_desc_name" ColumnName="job_desc_name" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="leave_employee">
+            <EntityTypeMapping TypeName="TickModel.leave_employee">
+              <MappingFragment StoreEntitySet="leave_employee">
+                <ScalarProperty Name="leave_emp_id" ColumnName="leave_emp_id" />
+                <ScalarProperty Name="leave_group_id" ColumnName="leave_group_id" />
+                <ScalarProperty Name="leave_start_date" ColumnName="leave_start_date" />
+                <ScalarProperty Name="leave_end_date" ColumnName="leave_end_date" />
+                <ScalarProperty Name="leave_reason" ColumnName="leave_reason" />
+                <ScalarProperty Name="leave_status" ColumnName="leave_status" />
+                <ScalarProperty Name="approve_by_emp_id" ColumnName="approve_by_emp_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="leave_group">
+            <EntityTypeMapping TypeName="TickModel.leave_group">
+              <MappingFragment StoreEntitySet="leave_group">
+                <ScalarProperty Name="leave_id" ColumnName="leave_id" />
+                <ScalarProperty Name="leave_type" ColumnName="leave_type" />
+                <ScalarProperty Name="number_of_days" ColumnName="number_of_days" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="projects">
+            <EntityTypeMapping TypeName="TickModel.project">
+              <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="project_name" ColumnName="project_name" />
+                <ScalarProperty Name="project_des" ColumnName="project_des" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TickModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tasks">
+            <EntityTypeMapping TypeName="TickModel.task">
+              <MappingFragment StoreEntitySet="task">
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="task_name" ColumnName="task_name" />
+                <ScalarProperty Name="task_start_time" ColumnName="task_start_time" />
+                <ScalarProperty Name="task_end_time" ColumnName="task_end_time" />
+                <ScalarProperty Name="task_description" ColumnName="task_description" />
+                <ScalarProperty Name="tracking_sheet_id" ColumnName="tracking_sheet_id" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tracking_sheet">
+            <EntityTypeMapping TypeName="TickModel.tracking_sheet">
+              <MappingFragment StoreEntitySet="tracking_sheet">
+                <ScalarProperty Name="tracking_id" ColumnName="tracking_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="tracking_date" ColumnName="tracking_date" />
+                <ScalarProperty Name="tracking_start_time" ColumnName="tracking_start_time" />
+                <ScalarProperty Name="tracking_end_time" ColumnName="tracking_end_time" />
+                <ScalarProperty Name="total_hours" ColumnName="total_hours" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
