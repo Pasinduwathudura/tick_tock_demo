@@ -28,13 +28,31 @@ namespace ticktok_demo.Controllers
         [ResponseType(typeof(company))]
         public async Task<IHttpActionResult> Getcompany(Guid id)
         {
-            company company = await db.companies.FindAsync(id);
-            if (company == null)
+            //db.Configuration.ProxyCreationEnabled = false;
+            
+            ////return Ok(db.companies.Where(t => t.company_id == id).Include(e=>e.calenders).Include(i=>i.projects));
+            //var response =
+            //    db.companies.Where(t => t.company_id == id)
+            //    .Include(e => e.calenders).Include(i => i.projects);
+            //return Ok(response);
+
+
+
+            db.Configuration.ProxyCreationEnabled = false;
+
+            var response = db.companies
+                .Where(t => t.company_id == id).Include(e => e.calenders).Include(i => i.projects)
+                .SingleOrDefault(); // Use SingleOrDefault instead of Where
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            else
             {
                 return NotFound();
             }
 
-            return Ok(company);
         }
 
         // PUT: api/companies/5

@@ -46,7 +46,7 @@ namespace ticktok_demo.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != task.task_id)
+            if (id != task.taskId)
             {
                 return BadRequest();
             }
@@ -72,6 +72,16 @@ namespace ticktok_demo.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpGet]
+        [Route("~/api/trakingsheet/task/{id}")]
+        [ResponseType(typeof(task))]
+        public IQueryable<task> GetTrackingSheetTask(Guid id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+
+            return db.tasks.Where(t => t.trackingSheetId == id).Include(p => p.tracking_sheet.project);
+        }
+
         // POST: api/tasks
         [ResponseType(typeof(task))]
         public async Task<IHttpActionResult> Posttask(task task)
@@ -82,25 +92,23 @@ namespace ticktok_demo.Controllers
             }
 
             db.tasks.Add(task);
+            await db.SaveChangesAsync();
 
-            try
+            var responseTask = new
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (taskExists(task.task_id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                taskId = task.taskId,
+                taskName = task.taskName,
+                taskStartTime = task.taskStartTime,
+                taskEndTime = task.taskEndTime,
+                taskDescription = task.taskDescription,
+                trackingSheetId = task.trackingSheetId,
+                projectId = task.projectId,
+                taskDate = task.taskDate
+            };
 
-            return CreatedAtRoute("DefaultApi", new { id = task.task_id }, task);
+            return CreatedAtRoute("DefaultApi", new { id = task.taskId }, responseTask);
         }
+
 
         // DELETE: api/tasks/5
         [ResponseType(typeof(task))]
@@ -129,7 +137,7 @@ namespace ticktok_demo.Controllers
 
         private bool taskExists(Guid id)
         {
-            return db.tasks.Count(e => e.task_id == id) > 0;
+            return db.tasks.Count(e => e.taskId == id) > 0;
         }
     }
 }

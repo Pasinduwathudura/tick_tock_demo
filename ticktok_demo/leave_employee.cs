@@ -16,12 +16,14 @@ namespace ticktok_demo
     {
         public System.Guid leave_emp_id { get; set; }
         public Nullable<System.Guid> leave_group_id { get; set; }
-        public Nullable<System.DateTime> leave_start_date { get; set; }
-        public Nullable<System.DateTime> leave_end_date { get; set; }
+        public Nullable<System.DateTime> leave_date { get; set; }
         public string leave_reason { get; set; }
         public string leave_status { get; set; }
         public Nullable<System.Guid> approve_by_emp_id { get; set; }
         public Nullable<System.Guid> employee_id { get; set; }
+        public Nullable<bool> IsHalfDay { get; set; }
+        public string HalfDayType { get; set; }
+        public Nullable<System.DateTime> leave_request_date { get; set; }
     
         public virtual employee employee { get; set; }
         public virtual employee employee1 { get; set; }

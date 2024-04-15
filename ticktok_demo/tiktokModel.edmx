@@ -4,7 +4,68 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TickModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TickModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="calender">
           <Key>
             <PropertyRef Name="calender_id" />
@@ -51,7 +112,7 @@
           <Key>
             <PropertyRef Name="emp_id" />
           </Key>
-          <Property Name="emp_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="emp_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="emp_first_name" Type="varchar(max)" />
           <Property Name="emp_last_name" Type="varchar(max)" />
           <Property Name="comp_id" Type="uniqueidentifier" />
@@ -59,6 +120,10 @@
           <Property Name="user_id" Type="nvarchar" MaxLength="128" />
           <Property Name="job_des_id" Type="uniqueidentifier" />
           <Property Name="pic" Type="varchar(max)" />
+          <Property Name="employee_no" Type="int" />
+          <Property Name="client_id" Type="uniqueidentifier" />
+          <Property Name="manager_id" Type="uniqueidentifier" />
+          <Property Name="project_id" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="employee_contact">
           <Key>
@@ -84,6 +149,7 @@
           <Property Name="company_id" Type="uniqueidentifier" />
           <Property Name="country_id" Type="uniqueidentifier" />
           <Property Name="holiday_date" Type="date" />
+          <Property Name="holiday_type" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="job_description">
           <Key>
@@ -99,12 +165,14 @@
           </Key>
           <Property Name="leave_emp_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="leave_group_id" Type="uniqueidentifier" />
-          <Property Name="leave_start_date" Type="datetime" />
-          <Property Name="leave_end_date" Type="datetime" />
+          <Property Name="leave_date" Type="datetime" />
           <Property Name="leave_reason" Type="varchar(max)" />
           <Property Name="leave_status" Type="varchar" MaxLength="50" />
           <Property Name="approve_by_emp_id" Type="uniqueidentifier" />
           <Property Name="employee_id" Type="uniqueidentifier" />
+          <Property Name="IsHalfDay" Type="bit" />
+          <Property Name="HalfDayType" Type="varchar" MaxLength="20" />
+          <Property Name="leave_request_date" Type="datetime" />
         </EntityType>
         <EntityType Name="leave_group">
           <Key>
@@ -136,28 +204,30 @@
         </EntityType>
         <EntityType Name="task">
           <Key>
-            <PropertyRef Name="task_id" />
+            <PropertyRef Name="taskId" />
           </Key>
-          <Property Name="task_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="task_name" Type="varchar(max)" />
-          <Property Name="task_start_time" Type="time" Precision="7" />
-          <Property Name="task_end_time" Type="time" Precision="7" />
-          <Property Name="task_description" Type="varchar(max)" />
-          <Property Name="tracking_sheet_id" Type="uniqueidentifier" />
-          <Property Name="project_id" Type="uniqueidentifier" />
+          <Property Name="taskId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="taskName" Type="varchar(max)" />
+          <Property Name="taskStartTime" Type="time" Precision="7" />
+          <Property Name="taskEndTime" Type="time" Precision="7" />
+          <Property Name="taskDescription" Type="varchar(max)" />
+          <Property Name="trackingSheetId" Type="uniqueidentifier" />
+          <Property Name="projectId" Type="uniqueidentifier" />
+          <Property Name="taskDate" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="tracking_sheet">
           <Key>
-            <PropertyRef Name="tracking_id" />
+            <PropertyRef Name="trackingId" />
           </Key>
-          <Property Name="tracking_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="employee_id" Type="uniqueidentifier" />
-          <Property Name="tracking_date" Type="date" />
-          <Property Name="tracking_start_time" Type="time" Precision="7" />
-          <Property Name="tracking_end_time" Type="time" Precision="7" />
-          <Property Name="total_hours" Type="int" />
-          <Property Name="company_id" Type="uniqueidentifier" />
-          <Property Name="project_id" Type="uniqueidentifier" />
+          <Property Name="trackingId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="employeeId" Type="uniqueidentifier" />
+          <Property Name="trackingStartTime" Type="time" Precision="7" />
+          <Property Name="trackingEndTime" Type="time" Precision="7" />
+          <Property Name="companyId" Type="uniqueidentifier" />
+          <Property Name="projectId" Type="uniqueidentifier" />
+          <Property Name="trackingDate" Type="date" />
+          <Property Name="approveStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="dayType" Type="varchar" MaxLength="30" />
         </EntityType>
         <Association Name="FK_calender_company">
           <End Role="company" Type="Self.company" Multiplicity="0..1" />
@@ -204,6 +274,62 @@
             </Principal>
             <Dependent Role="company">
               <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -359,7 +485,7 @@
               <PropertyRef Name="project_id" />
             </Principal>
             <Dependent Role="task">
-              <PropertyRef Name="project_id" />
+              <PropertyRef Name="projectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -368,10 +494,10 @@
           <End Role="task" Type="Self.task" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tracking_sheet">
-              <PropertyRef Name="tracking_id" />
+              <PropertyRef Name="trackingId" />
             </Principal>
             <Dependent Role="task">
-              <PropertyRef Name="tracking_sheet_id" />
+              <PropertyRef Name="trackingSheetId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -383,7 +509,7 @@
               <PropertyRef Name="company_id" />
             </Principal>
             <Dependent Role="tracking_sheet">
-              <PropertyRef Name="company_id" />
+              <PropertyRef Name="companyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -395,7 +521,7 @@
               <PropertyRef Name="emp_id" />
             </Principal>
             <Dependent Role="tracking_sheet">
-              <PropertyRef Name="employee_id" />
+              <PropertyRef Name="employeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -407,11 +533,17 @@
               <PropertyRef Name="project_id" />
             </Principal>
             <Dependent Role="tracking_sheet">
-              <PropertyRef Name="project_id" />
+              <PropertyRef Name="projectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TickModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="calender" EntityType="Self.calender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="client" EntityType="Self.client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="company" EntityType="Self.company" Schema="dbo" store:Type="Tables" />
@@ -441,6 +573,22 @@
           <AssociationSet Name="FK_company_client" Association="Self.FK_company_client">
             <End Role="client" EntitySet="client" />
             <End Role="company" EntitySet="company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_employee_company" Association="Self.FK_employee_company">
             <End Role="company" EntitySet="company" />
@@ -511,8 +659,7 @@
             <End Role="tracking_sheet" EntitySet="tracking_sheet" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TickModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -561,7 +708,7 @@
           <NavigationProperty Name="job_description" Relationship="Self.FK_job_description_company" FromRole="company" ToRole="job_description" />
           <NavigationProperty Name="leave_group" Relationship="Self.FK_leave_group_company" FromRole="company" ToRole="leave_group" />
           <NavigationProperty Name="projects" Relationship="Self.FK_project_company" FromRole="company" ToRole="project" />
-          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_company" FromRole="company" ToRole="tracking_sheet" />
+          <NavigationProperty Name="tracking_sheet" Relationship="TickModel.FK_tracking_sheet_company" FromRole="company" ToRole="tracking_sheet" />
         </EntityType>
         <EntityType Name="country">
           <Key>
@@ -577,7 +724,7 @@
           <Key>
             <PropertyRef Name="emp_id" />
           </Key>
-          <Property Name="emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="emp_first_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="emp_last_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="comp_id" Type="Guid" />
@@ -589,9 +736,13 @@
           <NavigationProperty Name="employee_contact" Relationship="Self.FK_employee_contact_employee" FromRole="employee" ToRole="employee_contact" />
           <NavigationProperty Name="holiday" Relationship="Self.FK_employee_holiday" FromRole="employee" ToRole="holiday" />
           <NavigationProperty Name="job_description" Relationship="Self.FK_employee_job_desc" FromRole="employee" ToRole="job_description" />
-          <NavigationProperty Name="leave_employee" Relationship="Self.FK_leave_employee_approved_by" FromRole="employee" ToRole="leave_employee" />
-          <NavigationProperty Name="leave_employee1" Relationship="Self.FK_leave_employee_employee" FromRole="employee" ToRole="leave_employee" />
-          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_employee" FromRole="employee" ToRole="tracking_sheet" />
+          <Property Name="employee_no" Type="Int32" />
+          <Property Name="client_id" Type="Guid" />
+          <Property Name="manager_id" Type="Guid" />
+          <NavigationProperty Name="tracking_sheet" Relationship="TickModel.FK_tracking_sheet_employee" FromRole="employee" ToRole="tracking_sheet" />
+          <Property Name="project_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="leave_employee" Relationship="TickModel.FK_leave_employee_approved_by" FromRole="employee" ToRole="leave_employee" />
+          <NavigationProperty Name="leave_employee1" Relationship="TickModel.FK_leave_employee_employee" FromRole="employee" ToRole="leave_employee" />
         </EntityType>
         <EntityType Name="employee_contact">
           <Key>
@@ -623,6 +774,7 @@
           <NavigationProperty Name="company" Relationship="Self.FK_holiday_company" FromRole="holiday" ToRole="company" />
           <NavigationProperty Name="country" Relationship="Self.FK_holiday_country" FromRole="holiday" ToRole="country" />
           <NavigationProperty Name="employees" Relationship="Self.FK_employee_holiday" FromRole="holiday" ToRole="employee" />
+          <Property Name="holiday_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="job_description">
           <Key>
@@ -633,21 +785,6 @@
           <Property Name="company_id" Type="Guid" />
           <NavigationProperty Name="company" Relationship="Self.FK_job_description_company" FromRole="job_description" ToRole="company" />
           <NavigationProperty Name="employees" Relationship="Self.FK_employee_job_desc" FromRole="job_description" ToRole="employee" />
-        </EntityType>
-        <EntityType Name="leave_employee">
-          <Key>
-            <PropertyRef Name="leave_emp_id" />
-          </Key>
-          <Property Name="leave_emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="leave_group_id" Type="Guid" />
-          <Property Name="leave_start_date" Type="DateTime" Precision="3" />
-          <Property Name="leave_end_date" Type="DateTime" Precision="3" />
-          <Property Name="leave_reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="leave_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="approve_by_emp_id" Type="Guid" />
-          <Property Name="employee_id" Type="Guid" />
-          <NavigationProperty Name="employee" Relationship="Self.FK_leave_employee_approved_by" FromRole="leave_employee" ToRole="employee" />
-          <NavigationProperty Name="employee1" Relationship="Self.FK_leave_employee_employee" FromRole="leave_employee" ToRole="employee" />
         </EntityType>
         <EntityType Name="leave_group">
           <Key>
@@ -668,49 +805,8 @@
           <Property Name="project_des" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="company_id" Type="Guid" />
           <NavigationProperty Name="company" Relationship="Self.FK_project_company" FromRole="project" ToRole="company" />
-          <NavigationProperty Name="tasks" Relationship="Self.FK_task_project" FromRole="project" ToRole="task" />
-          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_tracking_sheet_project" FromRole="project" ToRole="tracking_sheet" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="task">
-          <Key>
-            <PropertyRef Name="task_id" />
-          </Key>
-          <Property Name="task_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="task_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="task_start_time" Type="Time" Precision="7" />
-          <Property Name="task_end_time" Type="Time" Precision="7" />
-          <Property Name="task_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="tracking_sheet_id" Type="Guid" />
-          <Property Name="project_id" Type="Guid" />
-          <NavigationProperty Name="project" Relationship="Self.FK_task_project" FromRole="task" ToRole="project" />
-          <NavigationProperty Name="tracking_sheet" Relationship="Self.FK_task_tracking_sheet" FromRole="task" ToRole="tracking_sheet" />
-        </EntityType>
-        <EntityType Name="tracking_sheet">
-          <Key>
-            <PropertyRef Name="tracking_id" />
-          </Key>
-          <Property Name="tracking_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="employee_id" Type="Guid" />
-          <Property Name="tracking_date" Type="DateTime" Precision="0" />
-          <Property Name="tracking_start_time" Type="Time" Precision="7" />
-          <Property Name="tracking_end_time" Type="Time" Precision="7" />
-          <Property Name="total_hours" Type="Int32" />
-          <Property Name="company_id" Type="Guid" />
-          <Property Name="project_id" Type="Guid" />
-          <NavigationProperty Name="company" Relationship="Self.FK_tracking_sheet_company" FromRole="tracking_sheet" ToRole="company" />
-          <NavigationProperty Name="employee" Relationship="Self.FK_tracking_sheet_employee" FromRole="tracking_sheet" ToRole="employee" />
-          <NavigationProperty Name="project" Relationship="Self.FK_tracking_sheet_project" FromRole="tracking_sheet" ToRole="project" />
-          <NavigationProperty Name="tasks" Relationship="Self.FK_task_tracking_sheet" FromRole="tracking_sheet" ToRole="task" />
+          <NavigationProperty Name="tracking_sheet" Relationship="TickModel.FK_tracking_sheet_project" FromRole="project" ToRole="tracking_sheet" />
+          <NavigationProperty Name="tasks" Relationship="TickModel.FK_task_project" FromRole="project" ToRole="task" />
         </EntityType>
         <Association Name="FK_calender_company">
           <End Role="company" Type="Self.company" Multiplicity="0..1" />
@@ -820,18 +916,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tracking_sheet_company">
-          <End Role="company" Type="Self.company" Multiplicity="0..1" />
-          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="company">
-              <PropertyRef Name="company_id" />
-            </Principal>
-            <Dependent Role="tracking_sheet">
-              <PropertyRef Name="company_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_employee_contact_country">
           <End Role="country" Type="Self.country" Multiplicity="0..1" />
           <End Role="employee_contact" Type="Self.employee_contact" Multiplicity="*" />
@@ -892,78 +976,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_leave_employee_approved_by">
-          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
-          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="employee">
-              <PropertyRef Name="emp_id" />
-            </Principal>
-            <Dependent Role="leave_employee">
-              <PropertyRef Name="approve_by_emp_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_leave_employee_employee">
-          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
-          <End Role="leave_employee" Type="Self.leave_employee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="employee">
-              <PropertyRef Name="emp_id" />
-            </Principal>
-            <Dependent Role="leave_employee">
-              <PropertyRef Name="employee_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tracking_sheet_employee">
-          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
-          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="employee">
-              <PropertyRef Name="emp_id" />
-            </Principal>
-            <Dependent Role="tracking_sheet">
-              <PropertyRef Name="employee_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_task_project">
-          <End Role="project" Type="Self.project" Multiplicity="0..1" />
-          <End Role="task" Type="Self.task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="project">
-              <PropertyRef Name="project_id" />
-            </Principal>
-            <Dependent Role="task">
-              <PropertyRef Name="project_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tracking_sheet_project">
-          <End Role="project" Type="Self.project" Multiplicity="0..1" />
-          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="project">
-              <PropertyRef Name="project_id" />
-            </Principal>
-            <Dependent Role="tracking_sheet">
-              <PropertyRef Name="project_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_task_tracking_sheet">
-          <End Role="tracking_sheet" Type="Self.tracking_sheet" Multiplicity="0..1" />
-          <End Role="task" Type="Self.task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tracking_sheet">
-              <PropertyRef Name="tracking_id" />
-            </Principal>
-            <Dependent Role="task">
-              <PropertyRef Name="tracking_sheet_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="tickEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="calenders" EntityType="Self.calender" />
           <EntitySet Name="clients" EntityType="Self.client" />
@@ -973,12 +985,8 @@
           <EntitySet Name="employee_contact" EntityType="Self.employee_contact" />
           <EntitySet Name="holidays" EntityType="Self.holiday" />
           <EntitySet Name="job_description" EntityType="Self.job_description" />
-          <EntitySet Name="leave_employee" EntityType="Self.leave_employee" />
           <EntitySet Name="leave_group" EntityType="Self.leave_group" />
           <EntitySet Name="projects" EntityType="Self.project" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="tasks" EntityType="Self.task" />
-          <EntitySet Name="tracking_sheet" EntityType="Self.tracking_sheet" />
           <AssociationSet Name="FK_calender_company" Association="Self.FK_calender_company">
             <End Role="company" EntitySet="companies" />
             <End Role="calender" EntitySet="calenders" />
@@ -1015,10 +1023,6 @@
             <End Role="company" EntitySet="companies" />
             <End Role="project" EntitySet="projects" />
           </AssociationSet>
-          <AssociationSet Name="FK_tracking_sheet_company" Association="Self.FK_tracking_sheet_company">
-            <End Role="company" EntitySet="companies" />
-            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
-          </AssociationSet>
           <AssociationSet Name="FK_employee_contact_country" Association="Self.FK_employee_contact_country">
             <End Role="country" EntitySet="countries" />
             <End Role="employee_contact" EntitySet="employee_contact" />
@@ -1039,32 +1043,292 @@
             <End Role="job_description" EntitySet="job_description" />
             <End Role="employee" EntitySet="employees" />
           </AssociationSet>
-          <AssociationSet Name="FK_leave_employee_approved_by" Association="Self.FK_leave_employee_approved_by">
-            <End Role="employee" EntitySet="employees" />
-            <End Role="leave_employee" EntitySet="leave_employee" />
+          <EntitySet Name="C__MigrationHistory" EntityType="TickModel.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="TickModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="TickModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="TickModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="TickModel.AspNetUser" />
+          <EntitySet Name="sysdiagrams" EntityType="TickModel.sysdiagram" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="TickModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK_leave_employee_employee" Association="Self.FK_leave_employee_employee">
-            <End Role="employee" EntitySet="employees" />
-            <End Role="leave_employee" EntitySet="leave_employee" />
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="TickModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_tracking_sheet_employee" Association="Self.FK_tracking_sheet_employee">
+          <AssociationSet Name="AspNetUserRoles" Association="TickModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="tracking_sheet" EntityType="TickModel.tracking_sheet" />
+          <AssociationSet Name="FK_tracking_sheet_company" Association="TickModel.FK_tracking_sheet_company">
+            <End Role="company" EntitySet="companies" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tracking_sheet_employee" Association="TickModel.FK_tracking_sheet_employee">
             <End Role="employee" EntitySet="employees" />
             <End Role="tracking_sheet" EntitySet="tracking_sheet" />
           </AssociationSet>
-          <AssociationSet Name="FK_task_project" Association="Self.FK_task_project">
+          <AssociationSet Name="FK_tracking_sheet_project" Association="TickModel.FK_tracking_sheet_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
+          </AssociationSet>
+          <EntitySet Name="tasks" EntityType="TickModel.task" />
+          <AssociationSet Name="FK_task_project" Association="TickModel.FK_task_project">
             <End Role="project" EntitySet="projects" />
             <End Role="task" EntitySet="tasks" />
           </AssociationSet>
-          <AssociationSet Name="FK_tracking_sheet_project" Association="Self.FK_tracking_sheet_project">
-            <End Role="project" EntitySet="projects" />
-            <End Role="tracking_sheet" EntitySet="tracking_sheet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_task_tracking_sheet" Association="Self.FK_task_tracking_sheet">
+          <AssociationSet Name="FK_task_tracking_sheet" Association="TickModel.FK_task_tracking_sheet">
             <End Role="tracking_sheet" EntitySet="tracking_sheet" />
             <End Role="task" EntitySet="tasks" />
           </AssociationSet>
-        </EntityContainer>
-      </Schema>
+          <EntitySet Name="leave_employee" EntityType="TickModel.leave_employee" />
+          <AssociationSet Name="FK_leave_employee_approved_by" Association="TickModel.FK_leave_employee_approved_by">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_leave_employee_employee" Association="TickModel.FK_leave_employee_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="leave_employee" EntitySet="leave_employee" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TickModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="TickModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="TickModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="TickModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="TickModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="TickModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="TickModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="TickModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="TickModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="TickModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="TickModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="TickModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="tracking_sheet">
+          <Key>
+            <PropertyRef Name="trackingId" />
+          </Key>
+          <Property Name="trackingId" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employeeId" Type="Guid" />
+          <Property Name="trackingStartTime" Type="Time" Precision="7" />
+          <Property Name="trackingEndTime" Type="Time" Precision="7" />
+          <Property Name="companyId" Type="Guid" />
+          <Property Name="projectId" Type="Guid" />
+          <Property Name="trackingDate" Type="DateTime" Precision="0" />
+          <Property Name="approveStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="company" Relationship="TickModel.FK_tracking_sheet_company" FromRole="tracking_sheet" ToRole="company" />
+          <NavigationProperty Name="employee" Relationship="TickModel.FK_tracking_sheet_employee" FromRole="tracking_sheet" ToRole="employee" />
+          <NavigationProperty Name="project" Relationship="TickModel.FK_tracking_sheet_project" FromRole="tracking_sheet" ToRole="project" />
+          <NavigationProperty Name="tasks" Relationship="TickModel.FK_task_tracking_sheet" FromRole="tracking_sheet" ToRole="task" />
+          <Property Name="dayType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_tracking_sheet_company">
+          <End Type="TickModel.company" Role="company" Multiplicity="0..1" />
+          <End Type="TickModel.tracking_sheet" Role="tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="companyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_employee">
+          <End Type="TickModel.employee" Role="employee" Multiplicity="0..1" />
+          <End Type="TickModel.tracking_sheet" Role="tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="employeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tracking_sheet_project">
+          <End Type="TickModel.project" Role="project" Multiplicity="0..1" />
+          <End Type="TickModel.tracking_sheet" Role="tracking_sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tracking_sheet">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="taskId" />
+          </Key>
+          <Property Name="taskId" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="taskName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="taskStartTime" Type="Time" Precision="7" />
+          <Property Name="taskEndTime" Type="Time" Precision="7" />
+          <Property Name="taskDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="trackingSheetId" Type="Guid" />
+          <Property Name="projectId" Type="Guid" />
+          <Property Name="taskDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="project" Relationship="TickModel.FK_task_project" FromRole="task" ToRole="project" />
+          <NavigationProperty Name="tracking_sheet" Relationship="TickModel.FK_task_tracking_sheet" FromRole="task" ToRole="tracking_sheet" />
+        </EntityType>
+        <Association Name="FK_task_project">
+          <End Type="TickModel.project" Role="project" Multiplicity="0..1" />
+          <End Type="TickModel.task" Role="task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_tracking_sheet">
+          <End Type="TickModel.tracking_sheet" Role="tracking_sheet" Multiplicity="0..1" />
+          <End Type="TickModel.task" Role="task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tracking_sheet">
+              <PropertyRef Name="trackingId" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="trackingSheetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="leave_employee">
+          <Key>
+            <PropertyRef Name="leave_emp_id" />
+          </Key>
+          <Property Name="leave_emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="leave_group_id" Type="Guid" />
+          <Property Name="leave_date" Type="DateTime" Precision="3" />
+          <Property Name="leave_reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="leave_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approve_by_emp_id" Type="Guid" />
+          <Property Name="employee_id" Type="Guid" />
+          <Property Name="IsHalfDay" Type="Boolean" />
+          <Property Name="HalfDayType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="leave_request_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="employee" Relationship="TickModel.FK_leave_employee_approved_by" FromRole="leave_employee" ToRole="employee" />
+          <NavigationProperty Name="employee1" Relationship="TickModel.FK_leave_employee_employee" FromRole="leave_employee" ToRole="employee" />
+        </EntityType>
+        <Association Name="FK_leave_employee_approved_by">
+          <End Type="TickModel.employee" Role="employee" Multiplicity="0..1" />
+          <End Type="TickModel.leave_employee" Role="leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="approve_by_emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_leave_employee_employee">
+          <End Type="TickModel.employee" Role="employee" Multiplicity="0..1" />
+          <End Type="TickModel.leave_employee" Role="leave_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="emp_id" />
+            </Principal>
+            <Dependent Role="leave_employee">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1119,6 +1383,10 @@
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="TickModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
                 <ScalarProperty Name="emp_id" ColumnName="emp_id" />
                 <ScalarProperty Name="emp_first_name" ColumnName="emp_first_name" />
                 <ScalarProperty Name="emp_last_name" ColumnName="emp_last_name" />
@@ -1149,6 +1417,7 @@
           <EntitySetMapping Name="holidays">
             <EntityTypeMapping TypeName="TickModel.holiday">
               <MappingFragment StoreEntitySet="holiday">
+                <ScalarProperty Name="holiday_type" ColumnName="holiday_type" />
                 <ScalarProperty Name="holiday_id" ColumnName="holiday_id" />
                 <ScalarProperty Name="holiday_name" ColumnName="holiday_name" />
                 <ScalarProperty Name="company_id" ColumnName="company_id" />
@@ -1163,20 +1432,6 @@
                 <ScalarProperty Name="job_desc_id" ColumnName="job_desc_id" />
                 <ScalarProperty Name="job_desc_name" ColumnName="job_desc_name" />
                 <ScalarProperty Name="company_id" ColumnName="company_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="leave_employee">
-            <EntityTypeMapping TypeName="TickModel.leave_employee">
-              <MappingFragment StoreEntitySet="leave_employee">
-                <ScalarProperty Name="leave_emp_id" ColumnName="leave_emp_id" />
-                <ScalarProperty Name="leave_group_id" ColumnName="leave_group_id" />
-                <ScalarProperty Name="leave_start_date" ColumnName="leave_start_date" />
-                <ScalarProperty Name="leave_end_date" ColumnName="leave_end_date" />
-                <ScalarProperty Name="leave_reason" ColumnName="leave_reason" />
-                <ScalarProperty Name="leave_status" ColumnName="leave_status" />
-                <ScalarProperty Name="approve_by_emp_id" ColumnName="approve_by_emp_id" />
-                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1200,41 +1455,122 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="TickModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="TickModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="TickModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="TickModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="TickModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="TickModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="TickModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="tracking_sheet">
+            <EntityTypeMapping TypeName="TickModel.tracking_sheet">
+              <MappingFragment StoreEntitySet="tracking_sheet">
+                <ScalarProperty Name="dayType" ColumnName="dayType" />
+                <ScalarProperty Name="approveStatus" ColumnName="approveStatus" />
+                <ScalarProperty Name="trackingDate" ColumnName="trackingDate" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="companyId" ColumnName="companyId" />
+                <ScalarProperty Name="trackingEndTime" ColumnName="trackingEndTime" />
+                <ScalarProperty Name="trackingStartTime" ColumnName="trackingStartTime" />
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="trackingId" ColumnName="trackingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tasks">
             <EntityTypeMapping TypeName="TickModel.task">
               <MappingFragment StoreEntitySet="task">
-                <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="task_name" ColumnName="task_name" />
-                <ScalarProperty Name="task_start_time" ColumnName="task_start_time" />
-                <ScalarProperty Name="task_end_time" ColumnName="task_end_time" />
-                <ScalarProperty Name="task_description" ColumnName="task_description" />
-                <ScalarProperty Name="tracking_sheet_id" ColumnName="tracking_sheet_id" />
-                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="taskDate" ColumnName="taskDate" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="trackingSheetId" ColumnName="trackingSheetId" />
+                <ScalarProperty Name="taskDescription" ColumnName="taskDescription" />
+                <ScalarProperty Name="taskEndTime" ColumnName="taskEndTime" />
+                <ScalarProperty Name="taskStartTime" ColumnName="taskStartTime" />
+                <ScalarProperty Name="taskName" ColumnName="taskName" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tracking_sheet">
-            <EntityTypeMapping TypeName="TickModel.tracking_sheet">
-              <MappingFragment StoreEntitySet="tracking_sheet">
-                <ScalarProperty Name="tracking_id" ColumnName="tracking_id" />
+          <EntitySetMapping Name="leave_employee">
+            <EntityTypeMapping TypeName="TickModel.leave_employee">
+              <MappingFragment StoreEntitySet="leave_employee">
+                <ScalarProperty Name="leave_request_date" ColumnName="leave_request_date" />
+                <ScalarProperty Name="HalfDayType" ColumnName="HalfDayType" />
+                <ScalarProperty Name="IsHalfDay" ColumnName="IsHalfDay" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
-                <ScalarProperty Name="tracking_date" ColumnName="tracking_date" />
-                <ScalarProperty Name="tracking_start_time" ColumnName="tracking_start_time" />
-                <ScalarProperty Name="tracking_end_time" ColumnName="tracking_end_time" />
-                <ScalarProperty Name="total_hours" ColumnName="total_hours" />
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="approve_by_emp_id" ColumnName="approve_by_emp_id" />
+                <ScalarProperty Name="leave_status" ColumnName="leave_status" />
+                <ScalarProperty Name="leave_reason" ColumnName="leave_reason" />
+                <ScalarProperty Name="leave_date" ColumnName="leave_date" />
+                <ScalarProperty Name="leave_group_id" ColumnName="leave_group_id" />
+                <ScalarProperty Name="leave_emp_id" ColumnName="leave_emp_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

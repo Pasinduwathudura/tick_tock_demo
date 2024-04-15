@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -9,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.WebSockets;
 using ticktok_demo;
 
 namespace ticktok_demo.Controllers
@@ -28,7 +30,27 @@ namespace ticktok_demo.Controllers
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> Getemployee(Guid id)
         {
+
             employee employee = await db.employees.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(employee);
+        }
+
+        // GET: api/employees/current/user
+        [HttpGet]
+        [Route("~/api/employees/current/user")]
+        [ResponseType(typeof(employee))]
+        public async Task<IHttpActionResult> Getemployeescurrentuser()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            Guid currentUserId = new Guid(User.Identity.GetUserId());
+            System.Diagnostics.Debug.WriteLine(currentUserId);
+            employee employee = await db.employees.FindAsync(currentUserId);
+
             if (employee == null)
             {
                 return NotFound();
@@ -75,7 +97,10 @@ namespace ticktok_demo.Controllers
         // POST: api/employees
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> Postemployee(employee employee)
-        {
+        { 
+            Guid currentUserId = new Guid(User.Identity.GetUserId());
+            System.Diagnostics.Debug.WriteLine(currentUserId);
+            employee.emp_id = currentUserId;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -131,5 +156,7 @@ namespace ticktok_demo.Controllers
         {
             return db.employees.Count(e => e.emp_id == id) > 0;
         }
+
     }
+
 }

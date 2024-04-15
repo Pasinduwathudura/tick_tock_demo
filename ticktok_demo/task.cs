@@ -14,13 +14,14 @@ namespace ticktok_demo
     
     public partial class task
     {
-        public System.Guid task_id { get; set; }
-        public string task_name { get; set; }
-        public Nullable<System.TimeSpan> task_start_time { get; set; }
-        public Nullable<System.TimeSpan> task_end_time { get; set; }
-        public string task_description { get; set; }
-        public Nullable<System.Guid> tracking_sheet_id { get; set; }
-        public Nullable<System.Guid> project_id { get; set; }
+        public System.Guid taskId { get; set; }
+        public string taskName { get; set; }
+        public Nullable<System.TimeSpan> taskStartTime { get; set; }
+        public Nullable<System.TimeSpan> taskEndTime { get; set; }
+        public string taskDescription { get; set; }
+        public Nullable<System.Guid> trackingSheetId { get; set; }
+        public Nullable<System.Guid> projectId { get; set; }
+        public string taskDate { get; set; }
     
         public virtual project project { get; set; }
         public virtual tracking_sheet tracking_sheet { get; set; }

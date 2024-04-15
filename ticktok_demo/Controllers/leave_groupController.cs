@@ -21,6 +21,7 @@ namespace ticktok_demo.Controllers
         // GET: api/leave_group
         public IQueryable<leave_group> Getleave_group()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             return db.leave_group;
         }
 
@@ -28,6 +29,7 @@ namespace ticktok_demo.Controllers
         [ResponseType(typeof(leave_group))]
         public async Task<IHttpActionResult> Getleave_group(Guid id)
         {
+            db.Configuration.ProxyCreationEnabled = false;
             leave_group leave_group = await db.leave_group.FindAsync(id);
             if (leave_group == null)
             {

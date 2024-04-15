@@ -20,14 +20,15 @@ namespace ticktok_demo
             this.tasks = new HashSet<task>();
         }
     
-        public System.Guid tracking_id { get; set; }
-        public Nullable<System.Guid> employee_id { get; set; }
-        public Nullable<System.DateTime> tracking_date { get; set; }
-        public Nullable<System.TimeSpan> tracking_start_time { get; set; }
-        public Nullable<System.TimeSpan> tracking_end_time { get; set; }
-        public Nullable<int> total_hours { get; set; }
-        public Nullable<System.Guid> company_id { get; set; }
-        public Nullable<System.Guid> project_id { get; set; }
+        public System.Guid trackingId { get; set; }
+        public Nullable<System.Guid> employeeId { get; set; }
+        public Nullable<System.TimeSpan> trackingStartTime { get; set; }
+        public Nullable<System.TimeSpan> trackingEndTime { get; set; }
+        public Nullable<System.Guid> companyId { get; set; }
+        public Nullable<System.Guid> projectId { get; set; }
+        public Nullable<System.DateTime> trackingDate { get; set; }
+        public string approveStatus { get; set; }
+        public string dayType { get; set; }
     
         public virtual company company { get; set; }
         public virtual employee employee { get; set; }

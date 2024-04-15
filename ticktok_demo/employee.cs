@@ -18,9 +18,9 @@ namespace ticktok_demo
         public employee()
         {
             this.employee_contact = new HashSet<employee_contact>();
+            this.tracking_sheet = new HashSet<tracking_sheet>();
             this.leave_employee = new HashSet<leave_employee>();
             this.leave_employee1 = new HashSet<leave_employee>();
-            this.tracking_sheet = new HashSet<tracking_sheet>();
         }
     
         public System.Guid emp_id { get; set; }
@@ -31,6 +31,10 @@ namespace ticktok_demo
         public string user_id { get; set; }
         public Nullable<System.Guid> job_des_id { get; set; }
         public string pic { get; set; }
+        public Nullable<int> employee_no { get; set; }
+        public Nullable<System.Guid> client_id { get; set; }
+        public Nullable<System.Guid> manager_id { get; set; }
+        public string project_id { get; set; }
     
         public virtual company company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -38,10 +42,10 @@ namespace ticktok_demo
         public virtual holiday holiday { get; set; }
         public virtual job_description job_description { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tracking_sheet> tracking_sheet { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<leave_employee> leave_employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<leave_employee> leave_employee1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tracking_sheet> tracking_sheet { get; set; }
     }
 }

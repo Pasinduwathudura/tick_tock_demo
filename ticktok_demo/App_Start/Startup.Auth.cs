@@ -35,9 +35,9 @@ namespace ticktok_demo
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
+                TokenEndpointPath = new PathString("/login"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLoginfgh"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true

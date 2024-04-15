@@ -33,11 +33,16 @@ namespace ticktok_demo
         public virtual DbSet<employee_contact> employee_contact { get; set; }
         public virtual DbSet<holiday> holidays { get; set; }
         public virtual DbSet<job_description> job_description { get; set; }
-        public virtual DbSet<leave_employee> leave_employee { get; set; }
         public virtual DbSet<leave_group> leave_group { get; set; }
         public virtual DbSet<project> projects { get; set; }
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<task> tasks { get; set; }
         public virtual DbSet<tracking_sheet> tracking_sheet { get; set; }
+        public virtual DbSet<task> tasks { get; set; }
+        public virtual DbSet<leave_employee> leave_employee { get; set; }
     }
 }

@@ -26,6 +26,7 @@ namespace ticktok_demo
         public Nullable<System.Guid> company_id { get; set; }
         public Nullable<System.Guid> country_id { get; set; }
         public Nullable<System.DateTime> holiday_date { get; set; }
+        public string holiday_type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<calender> calenders { get; set; }

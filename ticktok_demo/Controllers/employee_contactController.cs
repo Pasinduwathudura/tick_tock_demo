@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -9,6 +10,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.UI;
+using System.Xml.Linq;
 using ticktok_demo;
 
 namespace ticktok_demo.Controllers
@@ -36,6 +39,74 @@ namespace ticktok_demo.Controllers
 
             return Ok(employee_contact);
         }
+
+        [HttpGet]
+        [Route("~/api/employee_contact/current/user")]
+        public async Task<IHttpActionResult> Getemployeescurrentuser()
+        {
+            Guid currentUserId = new Guid(User.Identity.GetUserId());
+          
+
+            System.Diagnostics.Debug.WriteLine(currentUserId);
+            db.Configuration.ProxyCreationEnabled = false;
+            var response = db.employee_contact
+                .Where(t => t.employee.emp_id == currentUserId)
+                .Include(c => c.employee.company)
+                .Include(cu => cu.employee.job_description)
+                .Include(h => h.employee.holiday)
+                .Include(ec => ec.employee)
+                .Include(c => c.country)
+                .Include(c => c.employee.company.client).SingleOrDefault();
+            return Ok(response);
+
+            //var response = db.employee_contact.Where(t => t.employee.emp_id == currentUserId)
+            //    .Include(c => c.employee.company).ToList();
+
+            //if (response.Count > 0)
+            //{
+            //    return Ok(response[0]);
+            //}
+            //else
+            //{
+            //    return NotFound();
+            //}
+
+
+
+
+            //return Ok(db.employee_contact.Where(t => t.employee.emp_id == currentUserId).Include(c => c.employee.company).Include(cu => cu.employee.job_description).Include(h => h.employee.holiday).Include(ec => ec.employee).Include(c => c.country).Include(c => c.employee.company.client).Include(b => b.employee).ToList());
+        }
+
+
+        //[HttpGet]
+        //[Route("~/api/employee_contact/current/user")]
+        //public async Task<IHttpActionResult> Getemployeescurrentuser()
+        //{
+        //    Guid currentUserId = new Guid(User.Identity.GetUserId());
+        //    System.Diagnostics.Debug.WriteLine(currentUserId);
+        //    db.Configuration.ProxyCreationEnabled = false;
+        //    var response = db.employee_contact
+        //        .Where(t => t.employee.emp_id == currentUserId)
+        //        .Include(c => c.employee.company)
+        //        .Include(cu => cu.employee.job_description)
+        //        .Include(h => h.employee.holiday)
+        //        .Include(ec => ec.employee)
+        //        .Include(c => c.country)
+        //        .Include(c => c.employee.company.client)
+        //        .ToList();
+
+        //    if (response.Any())
+        //    {
+        //        return Ok(response[0]);
+        //    }
+        //    else
+        //    {
+        //        // Handle the case when no records are
+        //        Console.WriteLine($"Name:");
+
+        //        return NotFound();
+        //    }
+        //}
 
         // PUT: api/employee_contact/5
         [ResponseType(typeof(void))]
