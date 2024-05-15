@@ -306,6 +306,11 @@
     <Compile Include="Controllers\deleteTrackingController.cs" />
     <Compile Include="Controllers\employeesController.cs" />
     <Compile Include="Controllers\employee_contactController.cs" />
+    <Compile Include="Controllers\getEmployeeDetailsbyManagerIdController.cs" />
+    <Compile Include="Controllers\getSubmittedEntiesByEmpIdController.cs" />
+    <Compile Include="Controllers\updateEntriesByManagerController.cs" />
+    <Compile Include="Controllers\userRolesController.cs" />
+    <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Controllers\holidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsertEventController.cs" />
@@ -355,6 +360,7 @@
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\EmployeeIdModel.cs" />
     <Compile Include="Models\EventLocationData.cs" />
+    <Compile Include="Models\getSubmitted.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Tracking.cs" />
     <Compile Include="project.cs">
@@ -362,6 +368,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Providers\JavaScriptSerializer.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="sysdiagram.cs">
@@ -386,6 +393,12 @@
       <DependentUpon>tiktokModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="tracking_sheet.cs">
+      <DependentUpon>tiktokModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_roles.cs">
+      <DependentUpon>tiktokModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_role_reference.cs">
       <DependentUpon>tiktokModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -488,12 +501,18 @@
     <Folder Include="Views\calendar\" />
     <Folder Include="Views\Dashboard\" />
     <Folder Include="Views\deleteTracking\" />
+    <Folder Include="Views\getEmployeeDetailsbyManagerId\" />
+    <Folder Include="Views\getEntiesByEmpId\" />
+    <Folder Include="Views\getSubmittedEntiesByEmpId\" />
+    <Folder Include="Views\GetSubmittedEntries\" />
     <Folder Include="Views\InsertEvent\" />
     <Folder Include="Views\SaveTrackingData\" />
     <Folder Include="Views\taskList\" />
     <Folder Include="Views\TrackingControllerBulk\" />
     <Folder Include="Views\trackingSheetYear\" />
     <Folder Include="Views\Tracking\" />
+    <Folder Include="Views\updateEntriesByManager\" />
+    <Folder Include="Views\userRoles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

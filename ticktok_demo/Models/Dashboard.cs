@@ -21,11 +21,16 @@ namespace ticktok_demo.Models
         public string projectName { get; set; }
         public string managerId { get; set; }
         public string managerName { get; set; }
+        public string managerEmail { get; set; }
         //public string workedDays { get; set; }
         public float numWorkingDays { get; set; }
         public float workedMinutes { get; set; }
+        public float totalWorkedDays { get; set; }
         public float totalLeaveDays { get; set; }
         public float leavesTaken { get; set; }
+        public float annualLeave { get; set; }
+        public float medicalLeaves { get; set; }
+        public float unpaidLeaves { get; set; }
         public float leaveBalance { get; set; }
         public float companyOff { get; set; }
         public float annualLeaveBalance { get; set; }
@@ -36,6 +41,7 @@ namespace ticktok_demo.Models
         public dynamic projectList { get; set; }
         public dynamic companyLocations { get; set; }
         public dynamic homeLocations { get; set; }
+        public dynamic approvalLevels { get; set; }
 
         //public string leaves { get; set; }
 

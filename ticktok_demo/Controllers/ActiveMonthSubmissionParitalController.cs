@@ -7,6 +7,8 @@ using System.Web.Http;
 using System.Configuration;
 using ticktok_demo.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 
 namespace tiktocktest.Controllers
 {
@@ -72,7 +74,7 @@ namespace tiktocktest.Controllers
                         mail.To.Add(managerEmail);
                         mail.Subject = emailSubject;
                         //mail.Subject = $"Approval Request Partial {employeeName} {monthName}";
-                        string approvalUrl = $"https://dummy.restapiexample.com/api/v1/{data.employeeId}";
+                        string approvalUrl = $"https://ticktock-25b0d.web.app/requests/timesheets/{data.employeeId}";
                         mail.Body = $@"
                             <!DOCTYPE html>
                             <html>
@@ -96,24 +98,33 @@ namespace tiktocktest.Controllers
                                 <p>Please review and approve the submission by clicking the following link: <a href='{approvalUrl}'>{approvalUrl}</a></p>
                                 <table>
                                     <tr>
-                                        <th>Tracking Date</th>
-                                        <th>Day Type</th>
-                                        <th>Tracking Start Time</th>
-                                        <th>Tracking End Time</th>
-                                        <th>Approval Status</th>
+                                        <th>DATE</th>
+                                        <th>TYPE</th>
+                                        <th>START TIME</th>
+                                        <th>END TIME</th>
+                                        <th>PROJECT</th>
+                                        <th>APPROVE STATUS</th>
                                         
                                     </tr>";
 
                         // Add rows for tracking sheet data for the primary recipient
-                        var trackingSheetArray = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(trackingSheetData);
+                        //var trackingSheetArray = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(trackingSheetData);
+                        //foreach (var item in trackingSheetArray)
+
+                        List<Dictionary<string, string>> trackingSheetArray = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(trackingSheetData);
+
+                        trackingSheetArray = trackingSheetArray.OrderBy(item => DateTime.Parse(item["trackingDate"])).ToList();
+
                         foreach (var item in trackingSheetArray)
+
                         {
                             mail.Body += $@"
                                     <tr>
-                                        <td>{item["trackingDate"]}</td>
+                                        <td>{DateTime.Parse(item["trackingDate"]).ToString("dd-MM-yyyy")}</td>
                                         <td>{item["dayType"]}</td>
                                         <td>{item["trackingStartTime"]}</td>
                                         <td>{item["trackingEndTime"]}</td>
+                                        <td>{item["projectName"]}</td>
                                         <td>{item["approveStatus"]}</td>
                                     </tr>";
                         }
@@ -167,11 +178,12 @@ namespace tiktocktest.Controllers
                             {(string.IsNullOrEmpty(data.note) ? "" : $"<p><span style='color:blue;'>*Note: {data.note}</span></p>")}
                             <table>
                                 <tr>
-                                        <th>Tracking Date</th>
-                                        <th>Day Type</th>
-                                        <th>Tracking Start Time</th>
-                                        <th>Tracking End Time</th>
-                                        <th>Approval Status</th>
+                                        <th>DATE</th>
+                                        <th>TYPE</th>
+                                        <th>START TIME</th>
+                                        <th>END TIME</th>
+                                        <th>PROJECT</th>
+                                        <th>APPROVE STATUS</th>
                                 </tr>";
 
                         // Add rows for tracking sheet data for the CC recipients
@@ -179,10 +191,11 @@ namespace tiktocktest.Controllers
                         {
                             ccMail.Body += $@"
                                     <tr>
-                                        <td>{item["trackingDate"]}</td>
+                                        <td>{DateTime.Parse(item["trackingDate"]).ToString("dd-MM-yyyy")}</td>
                                         <td>{item["dayType"]}</td>
                                         <td>{item["trackingStartTime"]}</td>
                                         <td>{item["trackingEndTime"]}</td>
+                                        <td>{item["projectName"]}</td>
                                         <td>{item["approveStatus"]}</td>
                                     </tr>";
                         }
@@ -204,8 +217,18 @@ namespace tiktocktest.Controllers
             }
             catch (Exception ex)
             {
-                // Handle any exceptions here
-                return InternalServerError(ex);
+                //return InternalServerError(ex);
+                var errorResponse = new ErrorResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
+
+                // Construct an HttpResponseMessage with status code 500 and the error message
+                var response = Request.CreateResponse(HttpStatusCode.InternalServerError, errorResponse);
+
+                // Return the response
+                return ResponseMessage(response);
             }
         }
     }

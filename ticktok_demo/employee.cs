@@ -35,6 +35,8 @@ namespace ticktok_demo
         public Nullable<System.Guid> client_id { get; set; }
         public Nullable<System.Guid> manager_id { get; set; }
         public string project_id { get; set; }
+        public Nullable<bool> is_active_mobile { get; set; }
+        public Nullable<bool> is_active_web { get; set; }
     
         public virtual company company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

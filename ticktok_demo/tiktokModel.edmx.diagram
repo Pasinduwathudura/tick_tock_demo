@@ -49,6 +49,8 @@
         <EntityTypeShape EntityType="TickModel.leave_employee" Width="1.5" PointX="9.75" PointY="24" />
         <AssociationConnector Association="TickModel.FK_leave_employee_approved_by" />
         <AssociationConnector Association="TickModel.FK_leave_employee_employee" />
+        <EntityTypeShape EntityType="TickModel.user_roles" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TickModel.user_role_reference" Width="1.5" PointX="7.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

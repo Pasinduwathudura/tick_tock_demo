@@ -44,5 +44,7 @@ namespace ticktok_demo
         public virtual DbSet<tracking_sheet> tracking_sheet { get; set; }
         public virtual DbSet<task> tasks { get; set; }
         public virtual DbSet<leave_employee> leave_employee { get; set; }
+        public virtual DbSet<user_roles> user_roles { get; set; }
+        public virtual DbSet<user_role_reference> user_role_reference { get; set; }
     }
 }

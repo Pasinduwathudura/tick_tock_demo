@@ -8,6 +8,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Http; // Add this namespace
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Net;
+using ticktok_demo.Models;
 
 namespace ticktok_demo.Controllers
 {
@@ -63,7 +66,18 @@ namespace ticktok_demo.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                //return InternalServerError(ex);
+                var errorResponse = new ErrorResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
+
+                // Construct an HttpResponseMessage with status code 500 and the error message
+                var response = Request.CreateResponse(HttpStatusCode.InternalServerError, errorResponse);
+
+                // Return the response
+                return ResponseMessage(response);
             }
             finally
             {

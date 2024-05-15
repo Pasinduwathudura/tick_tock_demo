@@ -112,7 +112,7 @@
           <Key>
             <PropertyRef Name="emp_id" />
           </Key>
-          <Property Name="emp_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="emp_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="emp_first_name" Type="varchar(max)" />
           <Property Name="emp_last_name" Type="varchar(max)" />
           <Property Name="comp_id" Type="uniqueidentifier" />
@@ -124,6 +124,8 @@
           <Property Name="client_id" Type="uniqueidentifier" />
           <Property Name="manager_id" Type="uniqueidentifier" />
           <Property Name="project_id" Type="varchar(max)" />
+          <Property Name="is_active_mobile" Type="bit" />
+          <Property Name="is_active_web" Type="bit" />
         </EntityType>
         <EntityType Name="employee_contact">
           <Key>
@@ -228,6 +230,22 @@
           <Property Name="trackingDate" Type="date" />
           <Property Name="approveStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="dayType" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="user_role_reference">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="varchar(max)" Nullable="false" />
+          <Property Name="roleId" Type="int" />
+        </EntityType>
+        <EntityType Name="user_roles">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleName" Type="varchar(max)" />
+          <Property Name="roleCode" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_calender_company">
           <End Role="company" Type="Self.company" Multiplicity="0..1" />
@@ -558,6 +576,8 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="task" EntityType="Self.task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tracking_sheet" EntityType="Self.tracking_sheet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_role_reference" EntityType="Self.user_role_reference" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_roles" EntityType="Self.user_roles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_calender_company" Association="Self.FK_calender_company">
             <End Role="company" EntitySet="company" />
             <End Role="calender" EntitySet="calender" />
@@ -724,7 +744,7 @@
           <Key>
             <PropertyRef Name="emp_id" />
           </Key>
-          <Property Name="emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="emp_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="emp_first_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="emp_last_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="comp_id" Type="Guid" />
@@ -743,6 +763,8 @@
           <Property Name="project_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="leave_employee" Relationship="TickModel.FK_leave_employee_approved_by" FromRole="employee" ToRole="leave_employee" />
           <NavigationProperty Name="leave_employee1" Relationship="TickModel.FK_leave_employee_employee" FromRole="employee" ToRole="leave_employee" />
+          <Property Name="is_active_mobile" Type="Boolean" />
+          <Property Name="is_active_web" Type="Boolean" />
         </EntityType>
         <EntityType Name="employee_contact">
           <Key>
@@ -1092,6 +1114,8 @@
             <End Role="employee" EntitySet="employees" />
             <End Role="leave_employee" EntitySet="leave_employee" />
           </AssociationSet>
+          <EntitySet Name="user_roles" EntityType="TickModel.user_roles" />
+          <EntitySet Name="user_role_reference" EntityType="TickModel.user_role_reference" />
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1328,6 +1352,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="user_roles">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="roleCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="user_role_reference">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="roleId" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1383,6 +1423,8 @@
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="TickModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="is_active_web" ColumnName="is_active_web" />
+                <ScalarProperty Name="is_active_mobile" ColumnName="is_active_mobile" />
                 <ScalarProperty Name="project_id" ColumnName="project_id" />
                 <ScalarProperty Name="manager_id" ColumnName="manager_id" />
                 <ScalarProperty Name="client_id" ColumnName="client_id" />
@@ -1571,6 +1613,24 @@
                 <ScalarProperty Name="leave_date" ColumnName="leave_date" />
                 <ScalarProperty Name="leave_group_id" ColumnName="leave_group_id" />
                 <ScalarProperty Name="leave_emp_id" ColumnName="leave_emp_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_roles">
+            <EntityTypeMapping TypeName="TickModel.user_roles">
+              <MappingFragment StoreEntitySet="user_roles">
+                <ScalarProperty Name="roleCode" ColumnName="roleCode" />
+                <ScalarProperty Name="roleName" ColumnName="roleName" />
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_role_reference">
+            <EntityTypeMapping TypeName="TickModel.user_role_reference">
+              <MappingFragment StoreEntitySet="user_role_reference">
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
