@@ -136,6 +136,7 @@ public static AuthenticationProperties CreateProperties(ApplicationUser user, em
         { "employeeNo", employee.employee_no.ToString() },
         { "employeeFName", employee.emp_first_name },
         { "employeeLName", employee.emp_last_name },
+        { "pic", employee.pic.ToString() },
         { "isActiveMobile", employee.is_active_mobile.ToString().ToLower() },
         { "isActiveWeb", employee.is_active_web.ToString().ToLower()}
 
