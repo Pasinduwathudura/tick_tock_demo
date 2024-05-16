@@ -31,6 +31,8 @@ namespace ticktok_demo.Models
         public float annualLeave { get; set; }
         public float medicalLeaves { get; set; }
         public float unpaidLeaves { get; set; }
+
+
         public float leaveBalance { get; set; }
         public float companyOff { get; set; }
         public float annualLeaveBalance { get; set; }
