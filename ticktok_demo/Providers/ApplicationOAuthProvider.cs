@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
@@ -127,9 +129,51 @@ namespace ticktok_demo.Providers
         }
 
 
-public static AuthenticationProperties CreateProperties(ApplicationUser user, employee employee, List<user_roles> roleDetailsList)
-{
-    var data = new Dictionary<string, string>
+
+
+
+        public static class DatabaseHelper
+        {
+            private static string connectionString = ConfigurationManager.ConnectionStrings["webapi_conn"].ConnectionString;
+
+            public static string GetActiveMonthForLogin(string email)
+            {
+                string activeMonth = null;
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    using (var command = new SqlCommand("dbo.ActiveMonthForLogin", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@email", SqlDbType.NVarChar) { Value = email });
+                        command.Parameters.Add(new SqlParameter("@ActiveMonth", SqlDbType.NVarChar, 50)
+                        {
+                            Direction = ParameterDirection.Output
+                        });
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        activeMonth = command.Parameters["@ActiveMonth"].Value as string;
+                    }
+                }
+
+                return activeMonth;
+            }
+        }
+
+
+
+
+
+
+
+        public static AuthenticationProperties CreateProperties(ApplicationUser user, employee employee, List<user_roles> roleDetailsList)
+        {
+            // Call the static method to get the active month
+            string activeMonth = DatabaseHelper.GetActiveMonthForLogin(user.Email);
+
+            var data = new Dictionary<string, string>
     {
         { "userName", user.UserName },
         { "userId", user.Id },
@@ -138,18 +182,15 @@ public static AuthenticationProperties CreateProperties(ApplicationUser user, em
         { "employeeLName", employee.emp_last_name },
         { "pic", employee.pic.ToString() },
         { "isActiveMobile", employee.is_active_mobile.ToString().ToLower() },
-        { "isActiveWeb", employee.is_active_web.ToString().ToLower()}
+        { "isActiveWeb", employee.is_active_web.ToString().ToLower() },
+        { "activeMonth", activeMonth }
+    };
 
-         };
+            return new AuthenticationProperties(data);
+        }
 
 
-            // Create AuthenticationProperties with the string dictionary
-            AuthenticationProperties properties = new AuthenticationProperties(data);
-         
-            return properties;
-}
 
- 
 
 
 
