@@ -114,6 +114,27 @@ namespace ticktok_demo.Controllers
             };
         }
 
+        //// POST api/Account/ChangePassword
+        //[Route("ChangePassword")]
+        //public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+        //        model.NewPassword);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
+
+        //    return Ok();
+        //}
+
+
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
@@ -123,9 +144,14 @@ namespace ticktok_demo.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
-            
+            var user = await UserManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            IdentityResult result = await UserManager.ChangePasswordAsync(user.Id, model.OldPassword, model.NewPassword);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -133,6 +159,9 @@ namespace ticktok_demo.Controllers
 
             return Ok();
         }
+
+
+
 
         // POST api/Account/SetPassword
         [Route("SetPassword")]
@@ -319,6 +348,27 @@ namespace ticktok_demo.Controllers
         }
 
         // POST api/Account/Register
+        //[AllowAnonymous]
+        //[Route("Register")]
+        //public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+        //    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
+
+        //    return Ok();
+        //}
+
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -328,7 +378,12 @@ namespace ticktok_demo.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser()
+            {
+                Id = model.Id, // Set the Id if you want to use it
+                UserName = model.Email,
+                Email = model.Email
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -339,6 +394,8 @@ namespace ticktok_demo.Controllers
 
             return Ok();
         }
+
+
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]

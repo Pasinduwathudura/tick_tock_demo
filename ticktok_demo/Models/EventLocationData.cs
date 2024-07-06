@@ -14,4 +14,13 @@ namespace ticktok_demo.Models
         public int eventId { get; set; }
 
     }
+
+    public class InsertErrorLog
+    { 
+       public string UserId { get; set; }
+       public string StatusCode { get; set; }
+       public string APIName { get; set; }
+       public string Remark { get; set; }
+ 
+    }
 }
