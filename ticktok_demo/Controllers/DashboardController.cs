@@ -50,7 +50,8 @@ namespace ticktok_demo.Controllers
                         cmd.Parameters.AddWithValue("@year", year);
                         cmd.Parameters.AddWithValue("@email", username);
                         cmd.Parameters.Add("@workedDays", SqlDbType.Int).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add("@empFirstName", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+                        //cmd.Parameters.Add("@empFirstName", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@empFirstName", SqlDbType.NVarChar, 100).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add("@pic", SqlDbType.VarChar, -1).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add("@employeeNo", SqlDbType.VarChar, -1).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add("@companyId", SqlDbType.VarChar, -1).Direction = ParameterDirection.Output;
@@ -98,7 +99,8 @@ namespace ticktok_demo.Controllers
                         {
                             emp = new Dashboard();
 
-                            emp.empFirstName = cmd.Parameters["@empFirstName"].Value.ToString();
+                           // emp.empFirstName = cmd.Parameters["@empFirstName"].Value.ToString();
+                            emp.empFirstName = cmd.Parameters["@empFirstName"].Value?.ToString();
                             emp.pic = cmd.Parameters["@pic"].Value.ToString();
                             emp.employeeNo = cmd.Parameters["@employeeNo"].Value.ToString();
                             emp.activeMonth = cmd.Parameters["@activeMonth"].Value.ToString();
