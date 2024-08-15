@@ -29,7 +29,7 @@ jobs:
         run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ASP-app
           path: '/published/**'
@@ -45,20 +45,20 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ASP-app
       
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A8C27B6D9BAA42EEAA15A94C75CCD3FF }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E6C2C99D22BA4F5699D2DCF85B0D8F42 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3953DE5557884D5A9000AD3D943DE447 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F0F4427333AB43E68ADEA66EDBABD92C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0791BACB361441D49F2D8D2BA8E7BCF6 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_61E5BBE8008943EBB8FE0B17D6922C6B }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'ticktockdev'
           slot-name: 'Production'
