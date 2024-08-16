@@ -29,7 +29,7 @@ namespace ticktok_demo.Controllers
                         command.Parameters.AddWithValue("@managerId", managerId);
 
                         // Add output parameter for @EmployeeDetails
-                        SqlParameter employeeDetailsParam = new SqlParameter("@EmployeeDetails", SqlDbType.VarChar, -1);
+                        SqlParameter employeeDetailsParam = new SqlParameter("@EmployeeDetails", SqlDbType.NVarChar, -1);
                         employeeDetailsParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(employeeDetailsParam);
 
