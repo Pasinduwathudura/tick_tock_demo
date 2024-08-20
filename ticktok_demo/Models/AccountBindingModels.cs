@@ -81,6 +81,8 @@ namespace ticktok_demo.Models
         [Display(Name = "AccessLevel")]
         public string AccessLevel { get; set; }
 
+        public string ActiveMonths { get; set; }
+
     }
 
     public class RegisterExternalBindingModel
