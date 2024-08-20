@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,13 +18,23 @@ using Microsoft.Owin.Security.OAuth;
 using ticktok_demo.Models;
 using ticktok_demo.Providers;
 using ticktok_demo.Results;
+using System.Configuration;
 
 namespace ticktok_demo.Controllers
 {
+
+
+
+
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
+
     {
+        private string connectionString = ConfigurationManager.ConnectionStrings["webapi_conn"].ConnectionString; // Update with your connection string
+
+
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
@@ -369,8 +381,42 @@ namespace ticktok_demo.Controllers
         //    return Ok();
         //}
 
+
+
+        // 2024/08/17 comment start
+        /*  
+        [AllowAnonymous]
+          [Route("Register")]
+          public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+          {
+              if (!ModelState.IsValid)
+              {
+                  return BadRequest(ModelState);
+              }
+
+              var user = new ApplicationUser()
+              {
+                  Id = model.Id, // Set the Id if you want to use it
+                  UserName = model.Email,
+                  Email = model.Email
+              };
+
+              IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+              if (!result.Succeeded)
+              {
+                  return GetErrorResult(result);
+              }
+
+              return Ok();
+          } */
+
+        // 2024/08/17 comment end
+
+
         [AllowAnonymous]
         [Route("Register")]
+
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -392,8 +438,38 @@ namespace ticktok_demo.Controllers
                 return GetErrorResult(result);
             }
 
+            // Call stored procedure to insert record
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand("RegisterEmployee", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", model.Id);
+                    command.Parameters.AddWithValue("@activeMonths", model.ActiveMonths);
+
+                    try
+                    {
+                        connection.Open();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle exceptions
+                        return InternalServerError(ex);
+                    }
+                }
+            }
+
             return Ok();
         }
+
+
+
+
+
+
+
+
 
 
 
