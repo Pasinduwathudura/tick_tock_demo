@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,13 +18,22 @@ using Microsoft.Owin.Security.OAuth;
 using ticktok_demo.Models;
 using ticktok_demo.Providers;
 using ticktok_demo.Results;
+using System.Configuration;
 
 namespace ticktok_demo.Controllers
+
+
 {
+    //private readonly string _connectionString = "YourConnectionStringHere"; // Update with your connection string
+
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
+        private string connectionString = ConfigurationManager.ConnectionStrings["webapi_conn"].ConnectionString;
+
+
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
@@ -287,9 +298,9 @@ namespace ticktok_demo.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -369,6 +380,34 @@ namespace ticktok_demo.Controllers
         //    return Ok();
         //}
 
+        /*  [AllowAnonymous]
+          [Route("Register")]
+          public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+          {
+              if (!ModelState.IsValid)
+              {
+                  return BadRequest(ModelState);
+              }
+
+              var user = new ApplicationUser()
+              {
+                  Id = model.Id, // Set the Id if you want to use it
+                  UserName = model.Email,
+                  Email = model.Email
+              };
+
+              IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+              if (!result.Succeeded)
+              {
+                  return GetErrorResult(result);
+              }
+
+              return Ok();
+          }
+        */
+
+
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -380,7 +419,7 @@ namespace ticktok_demo.Controllers
 
             var user = new ApplicationUser()
             {
-                Id = model.Id, // Set the Id if you want to use it
+                Id = model.Id,
                 UserName = model.Email,
                 Email = model.Email
             };
@@ -392,13 +431,38 @@ namespace ticktok_demo.Controllers
                 return GetErrorResult(result);
             }
 
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand("RegisterEmployee", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", model.Id);
+                    command.Parameters.AddWithValue("@activeMonths", model.ActiveMonths);
+
+                    try
+                    {
+                        connection.Open();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        return InternalServerError(ex);
+                    }
+                }
+            }
+
             return Ok();
         }
+    
 
 
 
-        // POST api/Account/RegisterExternal
-        [OverrideAuthentication]
+
+
+
+
+    // POST api/Account/RegisterExternal
+    [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
